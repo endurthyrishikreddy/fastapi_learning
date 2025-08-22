@@ -23,11 +23,30 @@ class ShowUser(BaseModel):
     class Config:
         orm_mode = True      
 
+
+from typing import Optional
+
 class ShowBlog(page):
     title: str
     content: str
-    creator : ShowUser
+    creator: Optional[ShowUser] = None
+
+    class Config:
+        orm_mode = True
+
+class Login(BaseModel):
+    username: str
+    password: str
+
+    class Config:
+        orm_mode = True 
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str 
+
+class TokenData(BaseModel):
+    username: str
 
     class Config:
         orm_mode = True    
-      

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday, Rasagnya! 🎂✨</title>
+  <meta name="description" content="A playful birthday webpage for the legendary bestie, Rasagnya." />
+  <style>
+    :root {
+      --bg: #0f1226;
+      --panel: #161a35;
+      --accent: #ff4d94;
+      --accent-2: #7cf5ff;
+      --text: #eef1ff;
+      --muted: #aab0d6;
+      --glow: 0 0 25px rgba(255, 77, 148, .55), 0 0 60px rgba(124, 245, 255, .25);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 800px at 20% -10%, #1b1f47, var(--bg)),
+                  radial-gradient(800px 600px at 120% 10%, #1a203f, transparent),
+                  var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      overflow-x: hidden;
+    }
+    .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 28px 20px 60px; position: relative; z-index: 1; }
+
+    header {
+      text-align: center; margin-top: 14px; margin-bottom: 22px;
+    }
+    .badge {
+      display: inline-block; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12); color: var(--muted); letter-spacing: .12em; text-transform: uppercase; font-size: 12px;
+      backdrop-filter: blur(6px); box-shadow: var(--glow);
+    }
+    h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      line-height: 1.05; margin: 16px 0 10px; letter-spacing: .5px; text-wrap: balance;
+    }
+    h1 .name { color: var(--accent); text-shadow: 0 0 18px rgba(255,77,148,.45); }
+    .subtitle { color: var(--muted); font-size: clamp(14px, 2.4vw, 18px); margin-top: 6px; }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 22px; padding: 22px; box-shadow: var(--glow);
+    }
+    .grid { display: grid; gap: 18px; grid-template-columns: repeat(12, 1fr); }
+    .col-12 { grid-column: span 12; }
+    .col-6 { grid-column: span 12; }
+    .col-4 { grid-column: span 12; }
+    @media (min-width: 720px){ .col-6 { grid-column: span 6; } .col-4 { grid-column: span 4; } }
+
+    .cta-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
+    button, .link-btn {
+      border: 0; border-radius: 14px; padding: 12px 18px; font-weight: 700; cursor: pointer;
+      background: linear-gradient(90deg, var(--accent), #ffb86b);
+      color: #24122b; box-shadow: 0 12px 24px rgba(255,77,148,.25), inset 0 -2px 0 rgba(0,0,0,.15);
+      transition: transform .08s ease, filter .2s ease;
+    }
+    button:hover, .link-btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+    .ghost {
+      background: rgba(255,255,255,.06); color: var(--text); box-shadow: none; border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .poem { font-size: clamp(16px, 2.2vw, 18px); line-height: 1.7; }
+    .poem p { margin: 0 0 10px; }
+    .spark { color: var(--accent-2); }
+
+    .reasons { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .reasons li {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); padding: 12px 14px; border-radius: 14px;
+    }
+
+    /* Polaroid Gallery */
+    .gallery { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+    .polaroid { background: #fff; color: #222; border-radius: 12px; padding: 12px 12px 28px; box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      transform: rotate(var(--r, -2deg)); transition: transform .2s ease; position: relative; overflow: hidden; }
+    .polaroid:hover { transform: rotate(0) translateY(-2px) scale(1.02); }
+    .polaroid img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; display: block; }
+    .caption { position: absolute; bottom: 6px; left: 12px; right: 12px; font-size: 12px; color: #444; opacity: .8; }
+
+    /* Confetti */
+    .confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 5; }
+    .piece { position: absolute; width: 10px; height: 14px; opacity: .95; transform: translateY(-110vh) rotate(0deg); will-change: transform; }
+
+    /* Balloons */
+    .balloons { position: fixed; inset: 0; pointer-events: none; z-index: 2; }
+    .balloon { position: absolute; font-size: 28px; opacity: .75; animation: floatUp linear forwards; }
+    @keyframes floatUp {
+      0% { transform: translateY(20vh) translateX(var(--x)); opacity: 0; }
+      10% { opacity: .9; }
+      100% { transform: translateY(-110vh) translateX(calc(var(--x) + 30px)); opacity: 0; }
+    }
+
+    footer { text-align: center; color: var(--muted); margin-top: 26px; font-size: 13px; }
+    .tiny { font-size: 12px; color: var(--muted); }
+
+    /* Sparkle cursor */
+    .cursor-sparkle { position: fixed; width: 8px; height: 8px; border-radius: 50%; background: radial-gradient(circle, #fff, rgba(255,255,255,0)); pointer-events: none; filter: drop-shadow(0 0 8px #fff); z-index: 6; }
+  </style>
+</head>
+<body>
+  <canvas class="stars"></canvas>
+  <div class="confetti" id="confetti"></div>
+  <div class="balloons" id="balloons"></div>
+  <div class="container">
+    <header>
+      <span class="badge">Operation: Birthday Brilliance</span>
+      <h1>
+        Happy Birthday, <span class="name">Rasagnya</span>! 🎉
+      </h1>
+      <p class="subtitle">May your Wi‑Fi be strong, your coffee be bottomless, and your cake be a legally questionable amount of frosting.</p>
+      <div class="cta-row">
+        <button id="boom">🎊 Launch Confetti</button>
+        <button class="ghost" id="float">🎈 Release Balloons</button>
+        <a class="link-btn ghost" id="save" download="HappyBirthday_Rasagnya.html" href="#">💾 Save This Page</a>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card col-6">
+        <h2>Open Letter to a Legendary Bestie ✍️</h2>
+        <div class="poem" id="poem">
+          <p>To my chaos co‑pilot, <strong>Rasagnya</strong> —</p>
+          <p>You’re the human version of a <em>perfect playlist</em>:
+             <span class="spark">bangers only</span>, zero skips, questionable dance moves encouraged.</p>
+          <p>Thanks for answering my 2 AM “urgent” texts like:
+             “Do we think dinosaurs had best friends?” and “Is cake a salad if it’s got fruit?”</p>
+          <p>May this year bring you wins so loud even your alarm gets jealous.
+             May your selfies auto‑glow, your snacks auto‑refill, and your plans auto‑work.</p>
+          <p>In conclusion: you’re rare, like finding fries at the bottom of the bag. 🍟
+             And today we celebrate the <em>entire combo meal</em> that is you. 🍔✨</p>
+          <p>PS: If anyone asks, yes—we’re accepting birthday cake donations in multiple currencies (including slices).</p>
+        </div>
+      </section>
+     </div> 
+    
+     <div> 
+      <section class="card col-6">
+        <h2>Top 7 Reasons You’re Unreasonably Awesome 🏆</h2>
+        <ol class="reasons" id="reasons">
+          <li>#1 You laugh at my jokes (even the experimental ones). Brave.</li>
+          <li>#2 Your vibe is 70% sunshine, 30% chaos—perfect weather.</li>
+          <li>#3 You give advice that slaps harder than a double espresso.</li>
+          <li>#4 You show up. Always. (Even when the group chat doesn’t.)</li>
+          <li>#5 You can turn any L into lore.</li>
+          <li>#6 Your playlist curation? Grammy‑adjacent.</li>
+          <li>#7 You keep life sparkly. Confetti policy: unlimited.</li>
+        </ol>
+      </section>
+
+      <section class="card col-12">
+        <h2>Drop In Your Favorite Photos 📸</h2>
+        <p class="tiny">Tip: add pics of you and Rasagnya to make this gift extra personal. They never leave your device.</p>
+        <input type="file" id="file" accept="image/*" multiple>
+        <div class="gallery" id="gallery"></div>
+      </section>
+
+      <section class="card col-12">
+        <h2>Mini Guestbook ✨</h2>
+        <p class="tiny">Leave a one‑liner for the birthday legend:</p>
+        <form id="guestbook" autocomplete="off">
+          <input style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.18); background:rgba(255,255,255,.06); color:var(--text);" placeholder="Type a sweet (or chaotic) message & press Enter" />
+        </form>
+        <div id="notes" class="gallery" style="margin-top:12px;"></div>
+      </section>
+    </div>
+
+    <footer>
+      Made with 🫶 by your bestie — optimized for maximum birthday joy.
+    </footer>
+  </div>
+
+  <div class="cursor-sparkle" id="sparkle" hidden></div>
+
+  <script>
+    // Random lil' starfield
+    const starCanvas = document.querySelector('.stars');
+    const sctx = starCanvas.getContext('2d');
+    function resizeStars(){ starCanvas.width = innerWidth; starCanvas.height = innerHeight; drawStars(); }
+    addEventListener('resize', resizeStars);
+    function drawStars(){
+      sctx.clearRect(0,0,starCanvas.width,starCanvas.height);
+      const count = Math.min(200, Math.floor((innerWidth*innerHeight)/9000));
+      for(let i=0;i<count;i++){
+        const x = Math.random()*starCanvas.width;
+        const y = Math.random()*starCanvas.height;
+        const r = Math.random()*1.2 + 0.2;
+        const alpha = Math.random()*0.7 + 0.3;
+        sctx.fillStyle = `rgba(255,255,255,${alpha})`;
+        sctx.beginPath(); sctx.arc(x,y,r,0,Math.PI*2); sctx.fill();
+      }
+    }
+    resizeStars();
+
+    // Confetti generator
+    const confetti = document.getElementById('confetti');
+    function launchConfetti(bursts = 150){
+      for(let i=0;i<bursts;i++){
+        const d = document.createElement('div');
+        d.className = 'piece';
+        const hue = Math.floor(Math.random()*360);
+        d.style.background = `hsl(${hue} 90% 60%)`;
+        d.style.left = Math.random()*100 + 'vw';
+        const fall = 6 + Math.random()*5; // seconds
+        const rotate = (Math.random()*720 - 360).toFixed(0);
+        const delay = Math.random()*0.5;
+        d.animate([
+          { transform: `translateY(-110vh) rotate(0deg)` },
+          { transform: `translateY(110vh) rotate(${rotate}deg)` }
+        ], { duration: fall*1000, delay: delay*1000, easing: 'cubic-bezier(.22,.61,.36,1)', fill: 'forwards' });
+        confetti.appendChild(d);
+        setTimeout(() => d.remove(), (fall+1)*1000);
+      }
+    }
+    document.getElementById('boom').addEventListener('click', () => launchConfetti(220));
+
+    // Balloons
+    const balloons = document.getElementById('balloons');
+    function releaseBalloons(n=18){
+      for(let i=0;i<n;i++){
+        const b = document.createElement('div');
+        b.className = 'balloon';
+        b.textContent = ['🎈','🎉','🎊','💖','✨','🪩'][Math.floor(Math.random()*6)];
+        const x = (Math.random()*90 - 45) + 'px';
+        b.style.left = Math.random()*100 + 'vw';
+        b.style.setProperty('--x', x);
+        b.style.animationDuration = (6 + Math.random()*6) + 's';
+        b.style.animationDelay = (Math.random()*0.8) + 's';
+        balloons.appendChild(b);
+        setTimeout(()=> b.remove(), 14000);
+      }
+    }
+    document.getElementById('float').addEventListener('click', () => releaseBalloons());
+
+    // Save as file (client-only)
+    const saveLink = document.getElementById('save');
+    saveLink.addEventListener('click', (e) => {
+      const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob); e.currentTarget.href = url;
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    });
+
+    // Gallery uploader (local preview only)
+    const input = document.getElementById('file');
+    const gal = document.getElementById('gallery');
+    input.addEventListener('change', async (e) => {
+      const files = Array.from(e.target.files).slice(0, 24);
+      files.forEach((file, idx) => {
+        const url = URL.createObjectURL(file);
+        const card = document.createElement('div');
+        card.className = 'polaroid';
+        card.style.setProperty('--r', (Math.random()*8 - 4) + 'deg');
+        const img = document.createElement('img'); img.src = url; img.alt = `Photo ${idx+1}`;
+        const cap = document.createElement('div'); cap.className = 'caption'; cap.textContent = file.name.replace(/\.[^.]+$/, '');
+        card.append(img, cap); gal.appendChild(card);
+        setTimeout(() => URL.revokeObjectURL(url), 30000);
+      });
+    });
+
+    // Guestbook notes
+    const guestForm = document.getElementById('guestbook');
+    const notes = document.getElementById('notes');
+    guestForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = e.target.querySelector('input');
+      const text = input.value.trim(); if(!text) return;
+      const note = document.createElement('div');
+      note.className = 'polaroid';
+      note.style.setProperty('--r', (Math.random()*10 - 5) + 'deg');
+      note.innerHTML = `<div style="height:180px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, rgba(255,77,148,.18), rgba(124,245,255,.18)); border-radius:8px; padding:10px; text-align:center; color:#222;">${text}</div>`;
+      notes.prepend(note);
+      input.value='';
+    });
+
+    // Sparkle cursor
+    const sparkle = document.getElementById('sparkle');
+    window.addEventListener('pointermove', (e) => {
+      sparkle.hidden = false;
+      sparkle.style.left = e.clientX + 'px';
+      sparkle.style.top = e.clientY + 'px';
+      const s = document.createElement('div');
+      s.className = 'cursor-sparkle';
+      s.style.left = e.clientX + 'px'; s.style.top = e.clientY + 'px';
+      document.body.appendChild(s);
+      s.animate([
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: .9 },
+        { transform: 'translate(-50%, -60%) scale(0.2)', opacity: 0 }
+      ], { duration: 500, easing: 'ease-out', fill: 'forwards' });
+      setTimeout(()=> s.remove(), 520);
+    });
+
+    // Auto‑party on load 🎉
+    setTimeout(() => { launchConfetti(180); releaseBalloons(14); }, 600);
+  </script>
+</body>
+</html>
